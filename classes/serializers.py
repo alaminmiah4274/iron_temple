@@ -1,5 +1,9 @@
 from rest_framework import serializers
-from classes.models import FitnessClass
+from classes.models import FitnessClass, Booking, Attendance
+from django.utils import timezone
+
+
+""" FITNESS MODEL SERIALZIER """
 
 
 class FitnessClassSerializer(serializers.ModelSerializer):
@@ -14,3 +18,91 @@ class FitnessClassSerializer(serializers.ModelSerializer):
             "duration",
             "capacity",
         ]
+
+
+""" BOOKING MODEL SERIALIZER """
+
+
+class BookingClassSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Booking
+        fields = [
+            "id",
+            "user",
+            "fitness_class",
+            "booking_date",
+            "status",
+        ]
+
+
+class BookFitnessClassSerializer(serializers.ModelSerializer):
+    fitness_class = FitnessClassSerializer(read_only=True)
+    fitness_class_id = serializers.PrimaryKeyRelatedField(
+        queryset=FitnessClass.objects.all(),
+        source="fitness_class",
+        write_only=True,
+    )
+
+    class Meta:
+        model = Booking
+        fields = [
+            "id",
+            "user",
+            "fitness_class",
+            "fitness_class_id",
+            "booking_date",
+            "status",
+        ]
+        read_only_fields = ["user", "fitness_class", "booking_date", "status"]
+
+    def validate(self, data):
+        """
+        Validate the booking:
+        - Class must be in the future
+        - Class must have available capacity
+        - User can't book same class twice
+        """
+        fitness_class = data["fitness_class"]
+        booking_date = data.get("booking_date", timezone.now().date())
+        user = self.context["user"]
+
+        # Check if class is in the past
+        if fitness_class.schedule < booking_date:
+            raise serializers.ValidationError(
+                "Cannot book a class that has already occurred."
+            )
+
+        # Check capacity
+        current_bookings = Booking.objects.filter(
+            fitness_class=fitness_class, status="BOOKED"
+        ).count()
+        if current_bookings >= fitness_class.capacity:
+            raise serializers.ValidationError("This class is fully booked.")
+
+        # Check for duplicate booking
+        if Booking.objects.filter(
+            user=user, fitness_class=fitness_class, status="BOOKED"
+        ).exists():
+            raise serializers.ValidationError("You have already booked this class.")
+
+        return data
+
+    def create(self, validated_data):
+        validated_data["user"] = self.context["user"]
+        validated_data["status"] = "BOOKED"
+        return super().create(validated_data)
+
+
+class UpdateBookedFitnessClassSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Booking
+        fields = ["status"]
+
+
+""" ATTENDANCE MODEL SERIALZIER """
+
+
+class AttendanceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Attendance
+        fields = ["id", "user", "fitness_class", "date", "status"]

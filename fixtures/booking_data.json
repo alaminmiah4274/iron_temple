@@ -1,0 +1,152 @@
+[
+  {
+    "model": "classes.Booking",
+    "pk": 1,
+    "fields": {
+      "user": 3,
+      "fitness_class": 1,
+      "status": "BOOKED",
+      "booking_date": "2025-04-08T09:00:00Z"
+    }
+  },
+  {
+    "model": "classes.Booking",
+    "pk": 2,
+    "fields": {
+      "user": 3,
+      "fitness_class": 2,
+      "status": "ATTENDED",
+      "booking_date": "2025-04-08T09:00:00Z"
+    }
+  },
+  {
+    "model": "classes.Booking",
+    "pk": 3,
+    "fields": {
+      "user": 3,
+      "fitness_class": 3,
+      "status": "BOOKED",
+      "booking_date": "2025-06-08T09:00:00Z"
+    }
+  },
+  {
+    "model": "classes.Booking",
+    "pk": 4,
+    "fields": {
+      "user": 3,
+      "fitness_class": 4,
+      "status": "CANCELLED",
+      "booking_date": "2025-05-08T09:00:00Z"
+    }
+  },
+  {
+    "model": "classes.Booking",
+    "pk": 5,
+    "fields": {
+      "user": 3,
+      "fitness_class": 5,
+      "status": "ATTENDED",
+      "booking_date": "2025-04-08T09:00:00Z"
+    }
+  },
+  {
+    "model": "classes.Booking",
+    "pk": 6,
+    "fields": {
+      "user": 3,
+      "fitness_class": 6,
+      "status": "BOOKED",
+      "booking_date": "2025-06-08T09:00:00Z"
+    }
+  },
+  {
+    "model": "classes.Booking",
+    "pk": 7,
+    "fields": {
+      "user": 3,
+      "fitness_class": 7,
+      "status": "ATTENDED",
+      "booking_date": "2025-06-08T09:00:00Z"
+    }
+  },
+  {
+    "model": "classes.Booking",
+    "pk": 8,
+    "fields": {
+      "user": 4,
+      "fitness_class": 8,
+      "status": "BOOKED",
+      "booking_date": "2025-04-08T09:00:00Z"
+    }
+  },
+  {
+    "model": "classes.Booking",
+    "pk": 9,
+    "fields": {
+      "user": 4,
+      "fitness_class": 9,
+      "status": "BOOKED",
+      "booking_date": "2025-04-08T09:00:00Z"
+    }
+  },
+  {
+    "model": "classes.Booking",
+    "pk": 10,
+    "fields": {
+      "user": 4,
+      "fitness_class": 10,
+      "status": "ATTENDED",
+      "booking_date": "2025-05-08T09:00:00Z"
+    }
+  },
+  {
+    "model": "classes.Booking",
+    "pk": 11,
+    "fields": {
+      "user": 4,
+      "fitness_class": 11,
+      "status": "CANCELLED",
+      "booking_date": "2025-04-08T09:00:00Z"
+    }
+  },
+  {
+    "model": "classes.Booking",
+    "pk": 12,
+    "fields": {
+      "user": 4,
+      "fitness_class": 12,
+      "status": "BOOKED",
+      "booking_date": "2025-08-08T09:00:00Z"
+    }
+  },
+  {
+    "model": "classes.Booking",
+    "pk": 13,
+    "fields": {
+      "user": 4,
+      "fitness_class": 13,
+      "status": "BOOKED",
+      "booking_date": "2025-09-08T09:00:00Z"
+    }
+  },
+  {
+    "model": "classes.Booking",
+    "pk": 14,
+    "fields": {
+      "user": 4,
+      "fitness_class": 14,
+      "status": "ATTENDED",
+      "booking_date": "2025-05-08T09:00:00Z"
+    }
+  },
+  {
+    "model": "classes.Booking",
+    "pk": 15,
+    "fields": {
+      "user": 4,
+      "fitness_class": 2,
+      "status": "BOOKED",
+      "booking_date": "2025-10-08T09:00:00Z"
+    }
+  }
+]

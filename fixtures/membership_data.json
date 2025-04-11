@@ -1,0 +1,92 @@
+[
+  {
+    "model": "plans.Membership",
+    "pk": 1,
+    "fields": {
+      "name": "Basic Weekly",
+      "price": 25.0,
+      "duration": "WEEKLY"
+    }
+  },
+  {
+    "model": "plans.Membership",
+    "pk": 2,
+    "fields": {
+      "name": "Standard Weekly",
+      "price": 35.0,
+      "duration": "WEEKLY"
+    }
+  },
+  {
+    "model": "plans.Membership",
+    "pk": 3,
+    "fields": {
+      "name": "Premium Weekly",
+      "price": 50.0,
+      "duration": "WEEKLY"
+    }
+  },
+  {
+    "model": "plans.Membership",
+    "pk": 4,
+    "fields": {
+      "name": "Basic Monthly",
+      "price": 80.0,
+      "duration": "MONTHLY"
+    }
+  },
+  {
+    "model": "plans.Membership",
+    "pk": 5,
+    "fields": {
+      "name": "Standard Monthly",
+      "price": 110.0,
+      "duration": "MONTHLY"
+    }
+  },
+  {
+    "model": "plans.Membership",
+    "pk": 6,
+    "fields": {
+      "name": "Premium Monthly",
+      "price": 150.0,
+      "duration": "MONTHLY"
+    }
+  },
+  {
+    "model": "plans.Membership",
+    "pk": 7,
+    "fields": {
+      "name": "Basic Yearly",
+      "price": 800.0,
+      "duration": "YEARLY"
+    }
+  },
+  {
+    "model": "plans.Membership",
+    "pk": 8,
+    "fields": {
+      "name": "Standard Yearly",
+      "price": 1000.0,
+      "duration": "YEARLY"
+    }
+  },
+  {
+    "model": "plans.Membership",
+    "pk": 9,
+    "fields": {
+      "name": "Premium Yearly",
+      "price": 1200.0,
+      "duration": "YEARLY"
+    }
+  },
+  {
+    "model": "plans.Membership",
+    "pk": 10,
+    "fields": {
+      "name": "Trial Pass",
+      "price": 0.0,
+      "duration": "WEEKLY"
+    }
+  }
+]

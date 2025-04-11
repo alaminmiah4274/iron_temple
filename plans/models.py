@@ -1,5 +1,5 @@
 from django.db import models
-import uuid
+from uuid import uuid4
 from django.conf import settings
 
 
@@ -38,12 +38,12 @@ class Subscription(models.Model):
 
 class Payment(models.Model):
     STATUS_CHOICES = [
-        ("COMPLETED", "Completed"),
         ("PENDING", "Pending"),
+        ("COMPLETED", "Completed"),
         ("FAILED", "Failed"),
     ]
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=True)
+    id = models.UUIDField(primary_key=True, default=uuid4, editable=True)
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="payments"
     )

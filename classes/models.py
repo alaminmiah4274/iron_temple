@@ -28,7 +28,7 @@ class Booking(models.Model):
     fitness_class = models.ForeignKey(
         FitnessClass, on_delete=models.CASCADE, related_name="bookings"
     )
-    booking_date = models.DateField()
+    booking_date = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="BOOKED")
 
 

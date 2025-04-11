@@ -24,4 +24,5 @@ class User(AbstractUser):
 Users:
 admin@admin.com: 1234
 stiven lisa: Tiven@2024
+de arms: Arms@2024
 """
