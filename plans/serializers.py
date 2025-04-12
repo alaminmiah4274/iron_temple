@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from plans.models import Membership, Subscription, Payment
+from plans.models import Membership, Subscription, Payment, MembershipImage
 from django.utils import timezone
 from datetime import timedelta
 
@@ -11,6 +11,14 @@ class MembershipSerializer(serializers.ModelSerializer):
     class Meta:
         model = Membership
         fields = ["id", "name", "price", "duration"]
+
+
+class MembershipImageSerializer(serializers.ModelSerializer):
+    image = serializers.ImageField()
+
+    class Meta:
+        model = MembershipImage
+        fields = ["id", "image"]
 
 
 """ MEMBERSHIP SERIALIZER """
@@ -56,6 +64,22 @@ class SubscribeMembershipSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ["user", "start_date", "end_date", "status"]
 
+    # def validate(self, data):
+    #     membership = data["membership"]
+    #     user = self.context["user"]
+
+    #     # to prevent subscribing same membership twice
+    #     if Subscription.objects.filter(
+    #         user=user,
+    #         membership=membership,
+    #         status="ACTIVE",
+    #     ).exists():
+    #         raise serializers.ValidationError(
+    #             "You have already subscribed this membership"
+    #         )
+
+    #     return data
+
     def create(self, validated_data):
         membership = validated_data["membership"]
         user = self.context["user"]
@@ -69,12 +93,20 @@ class SubscribeMembershipSerializer(serializers.ModelSerializer):
         else:
             end_date = start_date + timedelta(days=365)
 
+        # to prevent subscribing same membership twice
+        if Subscription.objects.filter(
+            user=user,
+            membership=membership,
+            status="ACTIVE",
+        ).exists():
+            return "You have already subscribed this membership"
+
         subscription = Subscription.objects.create(
             user=user,
             membership=membership,
             start_date=start_date,
             end_date=end_date,
-            status="Active",
+            status="ACTIVE",
         )
 
         return subscription

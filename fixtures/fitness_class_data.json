@@ -5,7 +5,7 @@
     "fields": {
       "name": "Power Pushup Classe",
       "description": "Intensive pushup variations to build upper body strength and endurance",
-      "instructor": 1,
+      "instructor": 2,
       "schedule": "2026-08-15",
       "duration": 45,
       "capacity": 20
@@ -17,7 +17,7 @@
     "fields": {
       "name": "Pullup Progression",
       "description": "Master pullups from beginner to advanced levels with proper form techniques",
-      "instructor": 1,
+      "instructor": 2,
       "schedule": "2026-08-16",
       "duration": 60,
       "capacity": 15
@@ -29,7 +29,7 @@
     "fields": {
       "name": "Squat Challenge",
       "description": "Lower body workout focusing on squat variations and proper form",
-      "instructor": 1,
+      "instructor": 2,
       "schedule": "2026-08-17",
       "duration": 50,
       "capacity": 25
@@ -41,7 +41,7 @@
     "fields": {
       "name": "Lunge and Core",
       "description": "Combination of lunge variations with core strengthening exercises",
-      "instructor": 3,
+      "instructor": 2,
       "schedule": "2026-08-18",
       "duration": 45,
       "capacity": 20
@@ -53,7 +53,7 @@
     "fields": {
       "name": "Side Plank Workshop",
       "description": "Core strengthening through various plank variations and progressions",
-      "instructor": 3,
+      "instructor": 2,
       "schedule": "2026-08-19",
       "duration": 30,
       "capacity": 30
@@ -65,7 +65,7 @@
     "fields": {
       "name": "Deadlift Fundamental",
       "description": "Learn proper deadlift form and variations for full-body strength",
-      "instructor": 3,
+      "instructor": 2,
       "schedule": "2026-08-20",
       "duration": 60,
       "capacity": 15
@@ -77,7 +77,7 @@
     "fields": {
       "name": "Dumbbell Row Circuit",
       "description": "Upper back and arm workout using dumbbell row variations",
-      "instructor": 1,
+      "instructor": 2,
       "schedule": "2026-08-21",
       "duration": 45,
       "capacity": 20
@@ -90,7 +90,7 @@
       "name": "Glute Bridge Burner",
       "description": "Targeted glute and hamstring workout with bridge variations",
       "instructor": 3,
-      "schedule": "2025-05-22",
+      "schedule": "2025-11-22",
       "duration": 40,
       "capacity": 25
     }
@@ -101,8 +101,8 @@
     "fields": {
       "name": "Single Leg Strength",
       "description": "Balance and strength training focusing on single-leg deadlifts",
-      "instructor": 1,
-      "schedule": "2025-05-28",
+      "instructor": 3,
+      "schedule": "2025-11-28",
       "duration": 45,
       "capacity": 15
     }
@@ -114,7 +114,7 @@
       "name": "Burpee Bootcamp",
       "description": "High-intensity full-body workout combining burpees with other exercises",
       "instructor": 3,
-      "schedule": "2025-05-23",
+      "schedule": "2025-11-23",
       "duration": 50,
       "capacity": 20
     }
@@ -125,8 +125,8 @@
     "fields": {
       "name": "Walking Meditation",
       "description": "Mindful walking combined with breathing exercises",
-      "instructor": 1,
-      "schedule": "2025-05-24",
+      "instructor": 3,
+      "schedule": "2025-11-24",
       "duration": 60,
       "capacity": 40
     }
@@ -138,7 +138,7 @@
       "name": "Running From Clinic",
       "description": "Improve running technique and efficiency with drills and exercises",
       "instructor": 3,
-      "schedule": "2025-05-25",
+      "schedule": "2025-11-25",
       "duration": 75,
       "capacity": 20
     }
@@ -150,7 +150,7 @@
       "name": "Cycling Endurance",
       "description": "Indoor cycling class focusing on endurance and proper pedaling technique",
       "instructor": 3,
-      "schedule": "2025-05-26",
+      "schedule": "2025-11-26",
       "duration": 90,
       "capacity": 30
     }
@@ -161,8 +161,8 @@
     "fields": {
       "name": "Yoga Flow",
       "description": "Vinyasa-style yoga combining movement with breath",
-      "instructor": 1,
-      "schedule": "2025-05-27",
+      "instructor": 3,
+      "schedule": "2025-11-27",
       "duration": 60,
       "capacity": 25
     }

@@ -1,11 +1,12 @@
 from rest_framework.viewsets import ModelViewSet
-from classes.models import FitnessClass, Booking, Attendance
+from classes.models import FitnessClass, Booking, Attendance, FitnessClassImage
 from classes.serializers import (
     FitnessClassSerializer,
     BookingClassSerializer,
     BookFitnessClassSerializer,
     UpdateBookedFitnessClassSerializer,
     AttendanceSerializer,
+    FitnessClassImageSerializer,
 )
 from classes.permissions import AdminOrReadOnlyFitnessClass
 from api.permissions import IsAdminOrReadOnly, IsAdminOrStaff
@@ -18,9 +19,22 @@ from rest_framework.response import Response
 
 
 class FitnessClassViewSet(ModelViewSet):
-    queryset = FitnessClass.objects.all()
+    queryset = FitnessClass.objects.prefetch_related("image").all()
     permission_classes = [AdminOrReadOnlyFitnessClass]
     serializer_class = FitnessClassSerializer
+
+
+class FitenessClassImageViewSet(ModelViewSet):
+    permission_classes = [IsAdminOrReadOnly]
+    serializer_class = FitnessClassImageSerializer
+
+    def get_queryset(self):
+        return FitnessClassImage.objects.filter(
+            fitness_class_id=self.kwargs.get("fitness_class_pk")
+        )
+
+    def perform_create(self, serializer):
+        serializer.save(fitness_class_id=self.kwargs.get("fitness_class_pk"))
 
 
 class BookingViewSet(ModelViewSet):
@@ -62,7 +76,11 @@ class BookingViewSet(ModelViewSet):
     def get_queryset(self):
         if self.request.user.is_superuser:
             return Booking.objects.all()
-        return Booking.objects.filter(user=self.request.user)
+        return (
+            Booking.objects.select_related("fitness_class")
+            .prefetch_related("fitness_class__image")
+            .filter(user=self.request.user)
+        )
 
 
 class AttendanceViewSet(ModelViewSet):

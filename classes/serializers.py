@@ -1,12 +1,22 @@
 from rest_framework import serializers
-from classes.models import FitnessClass, Booking, Attendance
+from classes.models import FitnessClass, Booking, Attendance, FitnessClassImage
 from django.utils import timezone
 
 
 """ FITNESS MODEL SERIALZIER """
 
 
+class FitnessClassImageSerializer(serializers.ModelSerializer):
+    image = serializers.ImageField()
+
+    class Meta:
+        model = FitnessClassImage
+        fields = ["id", "image"]
+
+
 class FitnessClassSerializer(serializers.ModelSerializer):
+    image = FitnessClassImageSerializer(many=True, read_only=True)
+
     class Meta:
         model = FitnessClass
         fields = [
@@ -17,6 +27,7 @@ class FitnessClassSerializer(serializers.ModelSerializer):
             "schedule",
             "duration",
             "capacity",
+            "image",
         ]
 
 

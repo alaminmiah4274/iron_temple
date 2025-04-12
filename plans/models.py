@@ -1,6 +1,7 @@
 from django.db import models
 from uuid import uuid4
 from django.conf import settings
+from cloudinary.models import CloudinaryField
 
 
 # Create your models here.
@@ -53,3 +54,10 @@ class Payment(models.Model):
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     payment_date = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="PENDING")
+
+
+class MembershipImage(models.Model):
+    membership = models.ForeignKey(
+        Membership, on_delete=models.CASCADE, related_name="images"
+    )
+    image = CloudinaryField("image")

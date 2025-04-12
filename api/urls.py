@@ -4,12 +4,14 @@ from classes.views import (
     FitnessClassViewSet,
     BookingViewSet,
     AttendanceViewSet,
+    FitenessClassImageViewSet,
 )
 from plans.views import (
     MembershipViewSet,
     SubscriptionViewSet,
     PaymentViewSet,
     PaymentReportViewSet,
+    MembershipImageViewSet,
 )
 from reviews.views import FeedbackViewSet
 from reports.views import ReportViewSet
@@ -27,9 +29,24 @@ router.register("payment-reports", PaymentReportViewSet, basename="payment-repor
 router.register("feedback", FeedbackViewSet, basename="feedback")
 router.register("reports", ReportViewSet, basename="reports")
 
+membership_router = routers.NestedDefaultRouter(
+    router, "memberships", lookup="membership"
+)
+membership_router.register(
+    "images", MembershipImageViewSet, basename="membership-images"
+)
+fitness_class_router = routers.NestedDefaultRouter(
+    router, "fitness-classes", lookup="fitness_class"
+)
+fitness_class_router.register(
+    "images", FitenessClassImageViewSet, basename="fitness-class-images"
+)
+
 
 urlpatterns = [
     path("auth/", include("djoser.urls")),
     path("auth/", include("djoser.urls.jwt")),
     path("", include(router.urls)),
+    path("", include(membership_router.urls)),
+    path("", include(fitness_class_router.urls)),
 ]

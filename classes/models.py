@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from cloudinary.models import CloudinaryField
 
 # Create your models here.
 
@@ -13,6 +14,13 @@ class FitnessClass(models.Model):
     schedule = models.DateField()
     duration = models.PositiveIntegerField(help_text="Duration in minutes")
     capacity = models.PositiveIntegerField(help_text="Max number of participants")
+
+
+class FitnessClassImage(models.Model):
+    fitness_class = models.ForeignKey(
+        FitnessClass, on_delete=models.CASCADE, related_name="image"
+    )
+    image = CloudinaryField("image")
 
 
 class Booking(models.Model):

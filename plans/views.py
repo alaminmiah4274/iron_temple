@@ -1,5 +1,5 @@
 from rest_framework.viewsets import ModelViewSet
-from plans.models import Membership, Subscription, Payment
+from plans.models import Membership, Subscription, Payment, MembershipImage
 from rest_framework.permissions import IsAuthenticated
 from api.permissions import IsAdminOrReadOnly
 from plans.serializers import (
@@ -9,12 +9,12 @@ from plans.serializers import (
     UpdateSubscriptionSerializer,
     PaymentSerializer,
     MakePaymentSerializer,
+    MembershipImageSerializer,
 )
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from plans.permissions import IsOwner, IsStaffUser
-from rest_framework import permissions, generics
-from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import permissions
+from django.db.models import Count, Q
 
 # Create your views here.
 
@@ -23,6 +23,19 @@ class MembershipViewSet(ModelViewSet):
     permission_classes = [IsAdminOrReadOnly]
     queryset = Membership.objects.all()
     serializer_class = MembershipSerializer
+
+
+class MembershipImageViewSet(ModelViewSet):
+    permission_classes = [IsAdminOrReadOnly]
+    serializer_class = MembershipImageSerializer
+
+    def get_queryset(self):
+        return MembershipImage.objects.filter(
+            membership_id=self.kwargs.get("membership_pk")
+        )
+
+    def perform_create(self, serializer):
+        serializer.save(membership_id=self.kwargs.get("membership_pk"))
 
 
 class SubscriptionViewSet(ModelViewSet):
@@ -35,6 +48,9 @@ class SubscriptionViewSet(ModelViewSet):
 
     def get_serializer_context(self):
         return {"user": self.request.user}
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
     @action(detail=True, methods=["patch"])
     def update_status(self, request, pk=None):
@@ -58,7 +74,9 @@ class SubscriptionViewSet(ModelViewSet):
     def get_queryset(self):
         if self.request.user.is_superuser:
             return Subscription.objects.all()
-        return Subscription.objects.filter(user=self.request.user)
+        return Subscription.objects.select_related("membership").filter(
+            user=self.request.user
+        )
 
 
 class PaymentViewSet(ModelViewSet):
@@ -101,13 +119,30 @@ class PaymentReportViewSet(ModelViewSet):
         # to get the queryset of this model viewset
         queryset = self.filter_queryset(self.get_queryset())
 
+        status_counts = queryset.aggregate(
+            total_payments=Count("id"),
+            completed_payments=Count("id", filter=Q(status="COMPLETED")),
+            pending_payments=Count("id", filter=Q(status="PENDING")),
+            failed_payments=Count("id", filter=Q(status="FAILED")),
+        )
+
+        total_amount = sum([payment.amount for payment in queryset])
+
         report_data = {
-            "total_payments": queryset.count(),
-            "total_amount": sum([payment.amount for payment in queryset]),
-            "completed_payments": queryset.filter(status="COMPLETED").count(),
-            "pending_payments": queryset.filter(status="PENDING").count(),
-            "failed_payments": queryset.filter(status="FAILED").count(),
+            "total_payments": status_counts["total_payments"],
+            "total_amount": total_amount,
+            "completed_payments": status_counts["completed_payments"],
+            "pending_payments": status_counts["pending_payments"],
+            "failed_payments": status_counts["failed_payments"],
             "payments": self.get_serializer(queryset, many=True).data,
         }
 
         return Response(report_data)
+
+
+""" 
+way of computing sum:
+from django.db.models import Sum
+
+total_amount = queryset.aggregate(Sum("amount"))["amount__sum"] or 0
+"""
