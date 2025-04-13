@@ -39,7 +39,7 @@ https://127.0.0.1:8000/swagger/
 Redoc documentation is available at:
 
 ```
-https://127.0.0.1:8000/swagger/
+https://127.0.0.1:8000/redoc/
 ```
 
 ## Environment Variables
