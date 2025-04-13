@@ -14,7 +14,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 AUTH_USER_MODEL = "users.User"
 
@@ -73,31 +73,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "iron_temple.wsgi.application"
-
-
-# Database
-# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": BASE_DIR / "db.sqlite3",
-#     }
-# }
-
-
-# POSTGRESQL CONFIG:
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql",
-#         "NAME": config("DB_NAME"),
-#         "USER": config("DB_USER"),
-#         "PASSWORD": config("DB_PASSWORD"),
-#         "HOST": config("DB_HOST"),
-#         "PORT": config("DB_PORT"),
-#     }
-# }
+WSGI_APPLICATION = "iron_temple.wsgi.app"
 
 
 # SUPABASE CONFIG (like postgres):
@@ -176,6 +152,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 "192.168.31.194: mahiya's mom"
 
+# rest framework config:
 REST_FRAMEWORK = {
     "COERCE_DECIMAL_TO_STRING": False,
     "DEFAULT_AUTHENTICATION_CLASSES": (
@@ -185,12 +162,14 @@ REST_FRAMEWORK = {
 }
 
 
+# jwt config:
 SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("JWT",),
     "ACCESS_TOKEN_LIFETIME": timedelta(days=10),
 }
 
 
+# djoser config
 DJOSER = {
     "PASSWORD_RESET_CONFIRM_URL": "password/reset/confirm/{uid}/{token}",
     "ACTIVATION_URL": "activate/{uid}/{token}",
@@ -201,6 +180,18 @@ DJOSER = {
     },
 }
 
+
+# swagger config:
+SWAGGER_SETTINGS = {
+    "SECURITY_DEFINITIONS": {
+        "Bearer": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header",
+            "description": "Enter your JWT token in the format: `JWT <your_token>`",
+        },
+    },
+}
 
 # email activation config:
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"

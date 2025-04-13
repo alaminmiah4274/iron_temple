@@ -19,12 +19,24 @@ from rest_framework.response import Response
 
 
 class FitnessClassViewSet(ModelViewSet):
+    """
+    API endpoints for managing fitness class:
+     - Allow authenticated Admin to manage all fitness classes
+     - Allow authenticated Staff to create, update and delete fitness class
+     - Allow authenticated User to view fitness classes and info
+    """
+
     queryset = FitnessClass.objects.prefetch_related("image").all()
     permission_classes = [AdminOrReadOnlyFitnessClass]
     serializer_class = FitnessClassSerializer
 
 
 class FitenessClassImageViewSet(ModelViewSet):
+    """
+    API endpoints for managing this class:
+     - Allow only admin to manage and add image for fitness classes
+    """
+
     permission_classes = [IsAdminOrReadOnly]
     serializer_class = FitnessClassImageSerializer
 
@@ -38,6 +50,13 @@ class FitenessClassImageViewSet(ModelViewSet):
 
 
 class BookingViewSet(ModelViewSet):
+    """
+    API endpoints for managing bookings
+     - Allow authenticated admin to manage all bookings
+     - Allow authenticated users/members to book classes and view their
+        booking history and update booking status
+    """
+
     http_method_names = ["post", "get", "delete", "patch"]
 
     def get_permissions(self):
@@ -84,6 +103,13 @@ class BookingViewSet(ModelViewSet):
 
 
 class AttendanceViewSet(ModelViewSet):
+    """
+    API endpoints for managing Attendance
+     - Allow authenticated admin to manage attendance
+     - Allow authenticated staff to mark attendance for users/members in fitness classes
+     - Allow authenticated users to view their attendance history
+    """
+
     serializer_class = AttendanceSerializer
 
     def get_permissions(self):

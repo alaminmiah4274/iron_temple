@@ -17,6 +17,12 @@ from rest_framework.response import Response
 
 
 class ReportViewSet(ModelViewSet):
+    """
+    API endpoints for managing Report
+     - Allow authenticated Admin to generate reports for
+        membership, attendance and feedback
+    """
+
     permission_classes = [IsAdminUser]
     http_method_names = ["get"]
 

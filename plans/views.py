@@ -20,6 +20,13 @@ from django.db.models import Count, Q
 
 
 class MembershipViewSet(ModelViewSet):
+    """
+    API endpoints for managing membership
+     - Allow authenticated Admin to manage all membership plans
+     - Allow authenticated Staff to create, update and delete membership plans
+     - Allow authenticated Users/members to view memberships
+    """
+
     permission_classes = [IsAdminOrReadOnly]
     queryset = Membership.objects.all()
     serializer_class = MembershipSerializer
@@ -39,6 +46,12 @@ class MembershipImageViewSet(ModelViewSet):
 
 
 class SubscriptionViewSet(ModelViewSet):
+    """
+    API endpoints for managing subsciptions
+     - Allow authenticated Admin to manage all subscriptions
+     - Allow authenticated Users/members to view and update their own subscriptions
+    """
+
     http_method_names = ["post", "get", "delete", "patch"]
 
     def get_permissions(self):
@@ -80,6 +93,13 @@ class SubscriptionViewSet(ModelViewSet):
 
 
 class PaymentViewSet(ModelViewSet):
+    """
+    API endpoints for managing Payment
+     - Allow authenticated Admin to manage all payments
+     - Allow authenticated Staff to view payments
+     - Allow authenticated User/members to make payments for their subscriptions
+    """
+
     def get_permissions(self):
         if self.request.user.is_staff:
             return [IsAdminOrReadOnly()]
@@ -108,6 +128,11 @@ class PaymentViewSet(ModelViewSet):
 
 
 class PaymentReportViewSet(ModelViewSet):
+    """
+    API endpoints for managing Payment Report
+     - Allow authenticated Admin to generate and manage payment reports
+    """
+
     http_method_names = ["get"]
     serializer_class = PaymentSerializer
     permission_classes = [permissions.IsAdminUser]
