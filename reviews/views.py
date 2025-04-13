@@ -13,7 +13,7 @@ class FeedbackViewSet(ModelViewSet):
     API endpoints for managing feedback
      - Allow authenticated admin to view all feedbacks
      - Allow authenticated staff to view feedbacks for their classes
-     - Allow authenticated users/members to create, update and delete their feedbacks
+     - Allow authenticated members to create, update and delete their feedbacks
     """
 
     serializer_class = FeedbackSerializer

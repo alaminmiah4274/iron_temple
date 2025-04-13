@@ -1,7 +1,7 @@
 from rest_framework.viewsets import ModelViewSet
 from plans.models import Membership, Subscription, Payment, MembershipImage
 from rest_framework.permissions import IsAuthenticated
-from api.permissions import IsAdminOrReadOnly
+from api.permissions import IsAdminOrReadOnly, IsAdminOrStaff
 from plans.serializers import (
     MembershipSerializer,
     SubscriptionSerializer,
@@ -24,7 +24,7 @@ class MembershipViewSet(ModelViewSet):
     API endpoints for managing membership
      - Allow authenticated Admin to manage all membership plans
      - Allow authenticated Staff to create, update and delete membership plans
-     - Allow authenticated Users/members to view memberships
+     - Allow authenticated Members to view memberships
     """
 
     permission_classes = [IsAdminOrReadOnly]
@@ -33,6 +33,11 @@ class MembershipViewSet(ModelViewSet):
 
 
 class MembershipImageViewSet(ModelViewSet):
+    """
+    API endpoints for managing Membership Image
+     - Allow authenticated admin to manage all
+    """
+
     permission_classes = [IsAdminOrReadOnly]
     serializer_class = MembershipImageSerializer
 
@@ -49,14 +54,16 @@ class SubscriptionViewSet(ModelViewSet):
     """
     API endpoints for managing subsciptions
      - Allow authenticated Admin to manage all subscriptions
-     - Allow authenticated Users/members to view and update their own subscriptions
+     - Allow authenticated Staff to view and delete only cancelled and expired
+        subscriptions of the members
+     - Allow authenticated Members to view and update their own subscriptions
     """
 
     http_method_names = ["post", "get", "delete", "patch"]
 
     def get_permissions(self):
         if self.action in ["destroy"]:
-            return [IsAdminOrReadOnly()]
+            return [IsAdminOrStaff()]
         return [IsAuthenticated()]
 
     def get_serializer_context(self):
@@ -87,6 +94,10 @@ class SubscriptionViewSet(ModelViewSet):
     def get_queryset(self):
         if self.request.user.is_superuser:
             return Subscription.objects.all()
+        if self.request.user.is_staff:
+            return Subscription.objects.select_related("membership").filter(
+                Q(status="CANCELLED") | Q(status="EXPIRED")
+            )
         return Subscription.objects.select_related("membership").filter(
             user=self.request.user
         )
@@ -97,7 +108,7 @@ class PaymentViewSet(ModelViewSet):
     API endpoints for managing Payment
      - Allow authenticated Admin to manage all payments
      - Allow authenticated Staff to view payments
-     - Allow authenticated User/members to make payments for their subscriptions
+     - Allow authenticated Members to make payments for their subscriptions
     """
 
     def get_permissions(self):

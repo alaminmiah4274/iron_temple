@@ -18,6 +18,7 @@ A complete gym management system backend built with Django REST Framework, featu
 - ✉️ User Feedback
 - 🔐 JWT Authentication with Djoser
 - 📄 Swagger API Documentation with `drf_yasg`
+- 📅 Role Based Access Control: Admin, Staff, Member
 
 ## 📦 Tech Stack
 

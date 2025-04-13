@@ -23,7 +23,7 @@ class FitnessClassViewSet(ModelViewSet):
     API endpoints for managing fitness class:
      - Allow authenticated Admin to manage all fitness classes
      - Allow authenticated Staff to create, update and delete fitness class
-     - Allow authenticated User to view fitness classes and info
+     - Allow authenticated Members to view fitness classes and info
     """
 
     queryset = FitnessClass.objects.prefetch_related("image").all()
@@ -53,7 +53,7 @@ class BookingViewSet(ModelViewSet):
     """
     API endpoints for managing bookings
      - Allow authenticated admin to manage all bookings
-     - Allow authenticated users/members to book classes and view their
+     - Allow authenticated members to book classes and view their
         booking history and update booking status
     """
 
@@ -106,8 +106,8 @@ class AttendanceViewSet(ModelViewSet):
     """
     API endpoints for managing Attendance
      - Allow authenticated admin to manage attendance
-     - Allow authenticated staff to mark attendance for users/members in fitness classes
-     - Allow authenticated users to view their attendance history
+     - Allow authenticated staff to mark attendance for members in fitness classes
+     - Allow authenticated members to view their attendance history
     """
 
     serializer_class = AttendanceSerializer
