@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "corsheaders",
     "drf_yasg",
     "rest_framework",
     "django_filters",
@@ -46,6 +47,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "debug_toolbar.middleware.DebugToolbarMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -74,6 +76,12 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "iron_temple.wsgi.app"
+
+
+# cors headers
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+]
 
 
 # SUPABASE CONFIG (like postgres):
