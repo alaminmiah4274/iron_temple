@@ -28,7 +28,7 @@ class MembershipViewSet(ModelViewSet):
     """
 
     permission_classes = [IsAdminOrReadOnly]
-    queryset = Membership.objects.all()
+    queryset = Membership.objects.prefetch_related("images").all()
     serializer_class = MembershipSerializer
 
 
