@@ -18,7 +18,7 @@ class FitnessClass(models.Model):
 
 class FitnessClassImage(models.Model):
     fitness_class = models.ForeignKey(
-        FitnessClass, on_delete=models.CASCADE, related_name="image"
+        FitnessClass, on_delete=models.CASCADE, related_name="images"
     )
     image = CloudinaryField("image")
 
