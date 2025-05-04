@@ -7,18 +7,21 @@ from datetime import timedelta
 """ MEMBERSHIP SERIALIZER """
 
 
-class MembershipSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Membership
-        fields = ["id", "name", "price", "duration"]
-
-
 class MembershipImageSerializer(serializers.ModelSerializer):
     image = serializers.ImageField()
 
     class Meta:
         model = MembershipImage
         fields = ["id", "image"]
+
+
+class MembershipSerializer(serializers.ModelSerializer):
+    images = MembershipImageSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Membership
+        fields = ["id", "name", "price", "duration", "images"]
+
 
 
 """ MEMBERSHIP SERIALIZER """

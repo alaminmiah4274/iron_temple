@@ -15,7 +15,7 @@ class FitnessClassImageSerializer(serializers.ModelSerializer):
 
 
 class FitnessClassSerializer(serializers.ModelSerializer):
-    image = FitnessClassImageSerializer(many=True, read_only=True)
+    images = FitnessClassImageSerializer(many=True, read_only=True)
 
     class Meta:
         model = FitnessClass
@@ -27,7 +27,7 @@ class FitnessClassSerializer(serializers.ModelSerializer):
             "schedule",
             "duration",
             "capacity",
-            "image",
+            "images",
         ]
 
 
