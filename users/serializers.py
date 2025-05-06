@@ -36,7 +36,7 @@ class GetCurrentUserSerializer(UserSerializer):
 
     def get_role(self, obj):
         if obj.is_superuser:
-            return "admin"
+            return "Admin"
         elif obj.is_staff:
-            return "staff"
-        return "user"
+            return "Staff"
+        return "Member"
