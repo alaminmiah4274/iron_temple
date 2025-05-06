@@ -1,4 +1,5 @@
 from djoser.serializers import UserCreateSerializer, UserSerializer
+from rest_framework import serializers
 
 
 # TO CREATE USER
@@ -17,6 +18,8 @@ class CustomUserCreateSerializer(UserCreateSerializer):
 
 # TO SHOW CURRENT USER INFO
 class GetCurrentUserSerializer(UserSerializer):
+    role = serializers.SerializerMethodField(method_name="get_role")
+
     class Meta(UserSerializer.Meta):
         ref_name = "CustomUser"
         fields = [
@@ -27,5 +30,13 @@ class GetCurrentUserSerializer(UserSerializer):
             "address",
             "phone_number",
             "is_staff",
+            "role",
         ]
         read_only_fields = ["is_staff"]
+
+    def get_role(self, obj):
+        if obj.is_superuser:
+            return "admin"
+        elif obj.is_staff:
+            return "staff"
+        return "user"
