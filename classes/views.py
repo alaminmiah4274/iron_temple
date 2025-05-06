@@ -94,8 +94,11 @@ class BookingViewSet(ModelViewSet):
 
     def get_queryset(self):
         if self.request.user.is_staff:
-            return Booking.objects.select_related("user", "fitness_class")
-            .prefetch_related("fitness_class__image").all()
+            return (
+                Booking.objects.select_related("user", "fitness_class")
+                .prefetch_related("fitness_class__image")
+                .all()
+            )
         return (
             Booking.objects.select_related("user", "fitness_class")
             .prefetch_related("fitness_class__image")
