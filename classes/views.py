@@ -93,10 +93,11 @@ class BookingViewSet(ModelViewSet):
         return BookFitnessClassSerializer
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return Booking.objects.all()
+        if self.request.user.is_staff:
+            return Booking.objects.select_related("user", "fitness_class")
+            .prefetch_related("fitness_class__image").all()
         return (
-            Booking.objects.select_related("fitness_class")
+            Booking.objects.select_related("user", "fitness_class")
             .prefetch_related("fitness_class__image")
             .filter(user=self.request.user)
         )
