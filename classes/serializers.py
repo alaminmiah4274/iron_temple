@@ -38,14 +38,22 @@ class FitnessClassSerializer(serializers.ModelSerializer):
 """ BOOKING MODEL SERIALIZER """
 
 
+# created to show user info in booking model
 class SimpleUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["id", "first_name", "last_name", "email", "address", "phone_number"]
 
 
+class BookedFitnessClassSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FitnessClass
+        fields = ["id", "name"]
+
+
 class BookingClassSerializer(serializers.ModelSerializer):
     user = SimpleUserSerializer(read_only=True)
+    fitness_class = BookedFitnessClassSerializer(read_only=True)
 
     class Meta:
         model = Booking
