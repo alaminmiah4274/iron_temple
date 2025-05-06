@@ -158,8 +158,6 @@ DEFUALT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
-"192.168.31.194: mahiya's mom"
-
 # rest framework config:
 REST_FRAMEWORK = {
     "COERCE_DECIMAL_TO_STRING": False,
@@ -173,7 +171,7 @@ REST_FRAMEWORK = {
 # jwt config:
 SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("JWT",),
-    "ACCESS_TOKEN_LIFETIME": timedelta(days=10),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
 }
 
 
