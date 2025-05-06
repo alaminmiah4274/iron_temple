@@ -1,6 +1,10 @@
 from rest_framework import serializers
 from classes.models import FitnessClass, Booking, Attendance, FitnessClassImage
 from django.utils import timezone
+from django.contrib.auth import get_user_model
+
+
+User = get_user_model()
 
 
 """ FITNESS MODEL SERIALZIER """
@@ -34,7 +38,15 @@ class FitnessClassSerializer(serializers.ModelSerializer):
 """ BOOKING MODEL SERIALIZER """
 
 
+class SimpleUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["id", "first_name", "last_name", "email", "address", "phone_number"]
+
+
 class BookingClassSerializer(serializers.ModelSerializer):
+    user = SimpleUserSerializer(read_only=True)
+
     class Meta:
         model = Booking
         fields = [
