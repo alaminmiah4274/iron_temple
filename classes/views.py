@@ -96,12 +96,12 @@ class BookingViewSet(ModelViewSet):
         if self.request.user.is_staff:
             return (
                 Booking.objects.select_related("user", "fitness_class")
-                .prefetch_related("fitness_class__image")
+                .prefetch_related("fitness_class__images")
                 .all()
             )
         return (
             Booking.objects.select_related("user", "fitness_class")
-            .prefetch_related("fitness_class__image")
+            .prefetch_related("fitness_class__images")
             .filter(user=self.request.user)
         )
 

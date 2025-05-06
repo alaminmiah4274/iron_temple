@@ -93,12 +93,12 @@ class SubscriptionViewSet(ModelViewSet):
 
     def get_queryset(self):
         if self.request.user.is_superuser:
-            return Subscription.objects.all()
+            return Subscription.objects.select_related("user", "membership").all()
         if self.request.user.is_staff:
-            return Subscription.objects.select_related("membership").filter(
+            return Subscription.objects.select_related("user", "membership").filter(
                 Q(status="CANCELLED") | Q(status="EXPIRED")
             )
-        return Subscription.objects.select_related("membership").filter(
+        return Subscription.objects.select_related("user", "membership").filter(
             user=self.request.user
         )
 
