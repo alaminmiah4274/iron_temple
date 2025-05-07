@@ -26,7 +26,7 @@ class FeedbackViewSet(ModelViewSet):
 
     def get_queryset(self):
         if self.request.user.is_superuser:
-            return Feedback.objects.all()
+            return Feedback.objects.select_related("user", "fitness_class").all()
         if self.request.user.is_staff:
             return Feedback.objects.filter(fitness_class__instructor=self.request.user)
         return Feedback.objects.filter(user=self.request.user)
