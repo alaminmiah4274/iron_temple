@@ -2,7 +2,10 @@ from rest_framework import serializers
 from plans.models import Membership, Subscription, Payment, MembershipImage
 from django.utils import timezone
 from datetime import timedelta
+from django.contrib.auth import get_user_model
 
+
+User = get_user_model()
 
 """ MEMBERSHIP SERIALIZER """
 
@@ -23,11 +26,20 @@ class MembershipSerializer(serializers.ModelSerializer):
         fields = ["id", "name", "price", "duration", "images"]
 
 
-
 """ MEMBERSHIP SERIALIZER """
 
 
+# created for showing user info in subscription model
+class SimpleUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["id", "first_name", "last_name", "email", "address", "phone_number"]
+
+
 class SubscriptionSerializer(serializers.ModelSerializer):
+    user = SimpleUserSerializer(read_only=True)
+    membership = MembershipSerializer(read_only=True)
+
     class Meta:
         model = Subscription
         fields = [
