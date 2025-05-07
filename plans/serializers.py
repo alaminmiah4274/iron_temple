@@ -79,22 +79,6 @@ class SubscribeMembershipSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ["user", "start_date", "end_date", "status"]
 
-    # def validate(self, data):
-    #     membership = data["membership"]
-    #     user = self.context["user"]
-
-    #     # to prevent subscribing same membership twice
-    #     if Subscription.objects.filter(
-    #         user=user,
-    #         membership=membership,
-    #         status="ACTIVE",
-    #     ).exists():
-    #         raise serializers.ValidationError(
-    #             "You have already subscribed this membership"
-    #         )
-
-    #     return data
-
     def create(self, validated_data):
         membership = validated_data["membership"]
         user = self.context["user"]
@@ -128,6 +112,8 @@ class SubscribeMembershipSerializer(serializers.ModelSerializer):
 
 
 class PaymentSerializer(serializers.ModelSerializer):
+    user = SimpleUserSerializer(read_only=True)
+
     class Meta:
         model = Payment
         fields = ["id", "user", "subscription", "amount", "payment_date", "status"]

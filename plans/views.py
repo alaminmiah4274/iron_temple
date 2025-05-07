@@ -128,9 +128,11 @@ class PaymentViewSet(ModelViewSet):
         return MakePaymentSerializer
 
     def get_queryset(self):
-        if self.request.user.is_superuser and self.request.user.is_staff:
-            return Payment.objects.all()
-        return Payment.objects.filter(user=self.request.user)
+        user = self.request.user
+
+        if user.is_superuser and user.is_staff:
+            return Payment.objects.select_related("user", "subscription").all()
+        return Payment.objects.filter(user=user)
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
