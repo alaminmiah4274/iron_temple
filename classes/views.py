@@ -26,7 +26,11 @@ class FitnessClassViewSet(ModelViewSet):
      - Allow authenticated Members to view fitness classes and info
     """
 
-    queryset = FitnessClass.objects.prefetch_related("images").all()
+    queryset = (
+        FitnessClass.objects.select_related("instructor")
+        .prefetch_related("images")
+        .all()
+    )
     permission_classes = [AdminOrReadOnlyFitnessClass]
     serializer_class = FitnessClassSerializer
 

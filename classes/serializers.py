@@ -7,6 +7,13 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 
+# created to show user info in booking model
+class SimpleUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["id", "first_name", "last_name", "email", "address", "phone_number"]
+
+
 """ FITNESS MODEL SERIALZIER """
 
 
@@ -19,6 +26,7 @@ class FitnessClassImageSerializer(serializers.ModelSerializer):
 
 
 class FitnessClassSerializer(serializers.ModelSerializer):
+    instructor = SimpleUserSerializer(read_only=True)
     images = FitnessClassImageSerializer(many=True, read_only=True)
 
     class Meta:
@@ -36,13 +44,6 @@ class FitnessClassSerializer(serializers.ModelSerializer):
 
 
 """ BOOKING MODEL SERIALIZER """
-
-
-# created to show user info in booking model
-class SimpleUserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ["id", "first_name", "last_name", "email", "address", "phone_number"]
 
 
 class BookedFitnessClassSerializer(serializers.ModelSerializer):
