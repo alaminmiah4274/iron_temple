@@ -85,6 +85,9 @@ class SubscriptionViewSet(ModelViewSet):
         )
 
     def get_serializer_class(self):
+        if getattr(self, "swagger_fake_view", False):
+            return SubscribeMembershipSerializer
+        
         user = self.request.user
 
         if user.is_superuser:
