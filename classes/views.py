@@ -7,6 +7,8 @@ from classes.serializers import (
     UpdateBookedFitnessClassSerializer,
     AttendanceSerializer,
     FitnessClassImageSerializer,
+    CreateAttendanceSerializer,
+    UpdateAttendanceSerializer,
 )
 from classes.permissions import AdminOrReadOnlyFitnessClass
 from api.permissions import IsAdminOrReadOnly, IsAdminOrStaff
@@ -124,12 +126,21 @@ class AttendanceViewSet(ModelViewSet):
      - Allow authenticated members to view their attendance history
     """
 
-    serializer_class = AttendanceSerializer
+    def get_serializer_class(self):
+        method = self.request.method
+
+        if method == "POST":
+            return CreateAttendanceSerializer
+        if method in ["PUT", "PATCH"]:
+            return UpdateAttendanceSerializer
+        return AttendanceSerializer
 
     def get_permissions(self):
-        if self.request.method == "POST":
+        method = self.request.method
+
+        if method in ["POST", "PUT", "PATCH"]:
             return [IsAdminOrStaff()]
-        if self.request.method == "DELETE":
+        if method == "DELETE":
             return [IsAdminOrReadOnly()]
         return [IsAuthenticated()]
 

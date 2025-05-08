@@ -143,3 +143,17 @@ class AttendanceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Attendance
         fields = ["id", "user", "fitness_class", "date", "status"]
+        read_only_fields = ["date", "status"]
+
+
+class CreateAttendanceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Attendance
+        fields = ["id", "user", "fitness_class", "date", "status"]
+
+
+class UpdateAttendanceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Attendance
+        fields = ["id", "user", "fitness_class", "date", "status"]
+        read_only_fields = ["user", "fitness_class"]
