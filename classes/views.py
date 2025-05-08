@@ -141,5 +141,5 @@ class AttendanceViewSet(ModelViewSet):
             return Attendance.objects.none()
 
         if user.is_superuser or user.is_staff:
-            return Attendance.objects.all()
-        return Attendance.objects.filter(user=user)
+            return Attendance.objects.select_related("user", "fitness_class").all()
+        return Attendance.objects.select_related("user", "fitness_class").filter(user=user)
