@@ -97,11 +97,11 @@ class BookingViewSet(ModelViewSet):
         return BookFitnessClassSerializer
 
     def get_queryset(self):
+        user = self.request.user
+
         if getattr(self, 'swagger_fake_view', False):
             # Return empty queryset during schema generation
             return Booking.objects.none()
-
-        user = self.request.user
 
         if user.is_staff:
             return (
@@ -134,11 +134,11 @@ class AttendanceViewSet(ModelViewSet):
         return [IsAuthenticated()]
 
     def get_queryset(self):
+        user = self.request.user
+
         if getattr(self, 'swagger_fake_view', False):
             # Return empty queryset during schema generation
-            return Booking.objects.none()
-        
-        user = self.request.user
+            return Attendance.objects.none()
 
         if user.is_superuser or user.is_staff:
             return Attendance.objects.all()

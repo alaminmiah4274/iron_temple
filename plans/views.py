@@ -145,11 +145,11 @@ class PaymentViewSet(ModelViewSet):
         return MakePaymentSerializer
 
     def get_queryset(self):
+        user = self.request.user
+
         if getattr(self, 'swagger_fake_view', False):
             # Return empty queryset during schema generation
-            return Booking.objects.none()
-        
-        user = self.request.user
+            return Payment.objects.none()
 
         if user.is_superuser and user.is_staff:
             return Payment.objects.select_related("user", "subscription").all()
