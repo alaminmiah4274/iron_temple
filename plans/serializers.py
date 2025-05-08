@@ -34,6 +34,7 @@ class SimpleUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["id", "first_name", "last_name", "email", "address", "phone_number"]
+        ref_name = "PlansSimpleUser"
 
 
 class SubscriptionSerializer(serializers.ModelSerializer):

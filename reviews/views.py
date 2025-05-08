@@ -25,11 +25,17 @@ class FeedbackViewSet(ModelViewSet):
         return [IsWriteOnly()]
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
+        if getattr(self, 'swagger_fake_view', False):
+            # Return empty queryset during schema generation
+            return Booking.objects.none()
+        
+        user = self.request.user
+        
+        if user.is_superuser:
             return Feedback.objects.select_related("user", "fitness_class").all()
-        if self.request.user.is_staff:
-            return Feedback.objects.filter(fitness_class__instructor=self.request.user)
-        return Feedback.objects.filter(user=self.request.user)
+        if user.is_staff:
+            return Feedback.objects.filter(fitness_class__instructor=user)
+        return Feedback.objects.filter(user=user)
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)

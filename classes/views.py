@@ -97,7 +97,13 @@ class BookingViewSet(ModelViewSet):
         return BookFitnessClassSerializer
 
     def get_queryset(self):
-        if self.request.user.is_staff:
+        if getattr(self, 'swagger_fake_view', False):
+            # Return empty queryset during schema generation
+            return Booking.objects.none()
+
+        user = self.request.user
+
+        if user.is_staff:
             return (
                 Booking.objects.select_related("user", "fitness_class")
                 .prefetch_related("fitness_class__images")
@@ -106,7 +112,7 @@ class BookingViewSet(ModelViewSet):
         return (
             Booking.objects.select_related("user", "fitness_class")
             .prefetch_related("fitness_class__images")
-            .filter(user=self.request.user)
+            .filter(user=user)
         )
 
 
@@ -128,6 +134,12 @@ class AttendanceViewSet(ModelViewSet):
         return [IsAuthenticated()]
 
     def get_queryset(self):
-        if self.request.user.is_superuser or self.request.user.is_staff:
+        if getattr(self, 'swagger_fake_view', False):
+            # Return empty queryset during schema generation
+            return Booking.objects.none()
+        
+        user = self.request.user
+
+        if user.is_superuser or user.is_staff:
             return Attendance.objects.all()
-        return Attendance.objects.filter(user=self.request.user)
+        return Attendance.objects.filter(user=user)

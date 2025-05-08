@@ -11,10 +11,11 @@ class SimpleUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["id", "first_name", "last_name", "email", "address", "phone_number"]
+        ref_name = "ReviewsSimpleUser"
 
 
 # for fitness class field
-class FitnessClassSerializer(serializers.ModelSerializer):
+class SimpleFitnessClassSerializer(serializers.ModelSerializer):
     class Meta:
         model = FitnessClass
         fields = [
@@ -29,7 +30,7 @@ class FitnessClassSerializer(serializers.ModelSerializer):
 
 class FeedbackSerializer(serializers.ModelSerializer):
     user = SimpleUserSerializer(read_only=True)
-    fitness_class = FitnessClassSerializer(read_only=True)
+    fitness_class = SimpleFitnessClassSerializer(read_only=True)
 
     class Meta:
         model = Feedback
