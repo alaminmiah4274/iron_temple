@@ -85,25 +85,35 @@ class SubscriptionViewSet(ModelViewSet):
         )
 
     def get_serializer_class(self):
-        if self.request.user.is_superuser:
+        user = self.request.user
+
+        if user.is_superuser:
             return SubscriptionSerializer
         if self.action == "update_status":
             return UpdateSubscriptionSerializer
         return SubscribeMembershipSerializer
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
+        if getattr(self, "swagger_fake_view", False):
+            # Return empty queryset during schema generation
+            return Subscription.objects.none()
+
+        user = self.request.user
+
+        if user.is_superuser:
             return (
                 Subscription.objects.select_related("user", "membership")
                 .prefetch_related("membership__images")
                 .all()
             )
-        if self.request.user.is_staff:
+        if user.is_staff:
             return Subscription.objects.select_related("user", "membership").filter(
                 Q(status="CANCELLED") | Q(status="EXPIRED")
             )
-        return Subscription.objects.select_related("user", "membership").filter(
-            user=self.request.user
+        return (
+            Subscription.objects.select_related("membership")
+            .prefetch_related("membership__images")
+            .filter(user=user)
         )
 
 
@@ -116,14 +126,18 @@ class PaymentViewSet(ModelViewSet):
     """
 
     def get_permissions(self):
-        if self.request.user.is_staff:
+        user = self.request.user
+
+        if user.is_staff:
             return [IsAdminOrReadOnly()]
         if self.action in ["update", "partial_update", "destroy"]:
             return [IsAdminOrReadOnly()]
         return [IsAuthenticated()]
 
     def get_serializer_class(self):
-        if self.request.user.is_superuser:
+        user = self.request.user
+
+        if user.is_superuser:
             return PaymentSerializer
         return MakePaymentSerializer
 
