@@ -73,12 +73,20 @@ class BookingClassSerializer(serializers.ModelSerializer):
 
 # to book a new fitness class (to create a booking)
 class BookFitnessClassSerializer(serializers.ModelSerializer):
+    fitness_class = BookedFitnessClassSerializer(read_only=True)
+    fitness_class_id = serializers.PrimaryKeyRelatedField(
+        queryset=FitnessClass.objects.all(),
+        source="fitness_class",
+        write_only=True,
+    )
+
     class Meta:
         model = Booking
         fields = [
             "id",
             "user",
             "fitness_class",
+            "fitness_class_id",
             "booking_date",
             "status",
         ]

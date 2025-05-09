@@ -120,7 +120,7 @@ class BookingViewSet(ModelViewSet):
                 .all()
             )
         return (
-            Booking.objects.filter(user=user)
+            Booking.objects.select_related("fitness_class").filter(user=user)
         )
 
 
