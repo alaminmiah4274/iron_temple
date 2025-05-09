@@ -8,7 +8,7 @@ from reviews.serializers import SimpleFitnessClassSerializer
 User = get_user_model()
 
 
-# created to show user info in booking model
+# created to show user info as a field in others serializer
 class SimpleUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -48,12 +48,14 @@ class FitnessClassSerializer(serializers.ModelSerializer):
 """ BOOKING MODEL SERIALIZER """
 
 
+# created to use as a fitness class field
+# in BookFitnessClassSerializer   
 class BookedFitnessClassSerializer(serializers.ModelSerializer):
     class Meta:
         model = FitnessClass
         fields = ["id", "name"]
 
-
+# to show all booking class info (for admin only)
 class BookingClassSerializer(serializers.ModelSerializer):
     user = SimpleUserSerializer(read_only=True)
     fitness_class = BookedFitnessClassSerializer(read_only=True)
@@ -69,25 +71,18 @@ class BookingClassSerializer(serializers.ModelSerializer):
         ]
 
 
+# to book a new fitness class (to create a booking)
 class BookFitnessClassSerializer(serializers.ModelSerializer):
-    fitness_class = FitnessClassSerializer(read_only=True)
-    fitness_class_id = serializers.PrimaryKeyRelatedField(
-        queryset=FitnessClass.objects.all(),
-        source="fitness_class",
-        write_only=True,
-    )
-
     class Meta:
         model = Booking
         fields = [
             "id",
             "user",
             "fitness_class",
-            "fitness_class_id",
             "booking_date",
             "status",
         ]
-        read_only_fields = ["user", "fitness_class", "booking_date", "status"]
+        read_only_fields = ["user", "booking_date", "status"]
 
     def validate(self, data):
         """
@@ -126,7 +121,7 @@ class BookFitnessClassSerializer(serializers.ModelSerializer):
         validated_data["status"] = "BOOKED"
         return super().create(validated_data)
 
-
+# to update already booked fitness class
 class UpdateBookedFitnessClassSerializer(serializers.ModelSerializer):
     class Meta:
         model = Booking

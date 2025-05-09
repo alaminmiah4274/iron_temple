@@ -98,7 +98,9 @@ class BookingViewSet(ModelViewSet):
         return Response({"status": "Your class booked successfuly."})
 
     def get_serializer_class(self):
-        if self.request.user.is_superuser:
+        user = self.request.user
+
+        if user.is_superuser:
             return BookingClassSerializer
         if self.action == "update_status":
             return UpdateBookedFitnessClassSerializer
@@ -118,9 +120,7 @@ class BookingViewSet(ModelViewSet):
                 .all()
             )
         return (
-            Booking.objects.select_related("user", "fitness_class")
-            .prefetch_related("fitness_class__images")
-            .filter(user=user)
+            Booking.objects.filter(user=user)
         )
 
 
