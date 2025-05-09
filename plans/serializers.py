@@ -26,10 +26,10 @@ class MembershipSerializer(serializers.ModelSerializer):
         fields = ["id", "name", "price", "duration", "images"]
 
 
-""" MEMBERSHIP SERIALIZER """
+""" SUBSCRIPTION SERIALIZER """
 
 
-# created for showing user info in subscription model
+# created for showing user info in subscription serializer
 class SimpleUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -53,12 +53,14 @@ class SubscriptionSerializer(serializers.ModelSerializer):
         ]
 
 
+# to update already subscribed membership (subscription)
 class UpdateSubscriptionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Subscription
         fields = ["status"]
 
 
+# to create a new subscription
 class SubscribeMembershipSerializer(serializers.ModelSerializer):
     membership = MembershipSerializer(read_only=True)
     membership_id = serializers.PrimaryKeyRelatedField(
@@ -99,7 +101,8 @@ class SubscribeMembershipSerializer(serializers.ModelSerializer):
             membership=membership,
             status="ACTIVE",
         ).exists():
-            return "You have already subscribed this membership"
+            # return "You have already subscribed this membership"
+            raise serializers.ValidationError("You have already subscribed to this membership.")
 
         subscription = Subscription.objects.create(
             user=user,
@@ -112,6 +115,9 @@ class SubscribeMembershipSerializer(serializers.ModelSerializer):
         return subscription
 
 
+""" PAYMENT SERIALIZER """
+
+# to show payment info (for admin)
 class PaymentSerializer(serializers.ModelSerializer):
     user = SimpleUserSerializer(read_only=True)
 
@@ -121,6 +127,7 @@ class PaymentSerializer(serializers.ModelSerializer):
         read_only_fields = ["id"]
 
 
+# to create a new payment
 class MakePaymentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Payment

@@ -60,7 +60,7 @@ class SubscriptionViewSet(ModelViewSet):
      - Allow authenticated Admin to manage all subscriptions
      - Allow authenticated Staff to view and delete only cancelled and expired
         subscriptions of the members
-     - Allow authenticated Members to view and update their own subscriptions
+     - Allow authenticated Members to create, view and update their own subscriptions
     """
     filter_backends = [SearchFilter]
     search_fields = ["user__email", "membership__name", "status"]
@@ -74,8 +74,6 @@ class SubscriptionViewSet(ModelViewSet):
     def get_serializer_context(self):
         return {"user": self.request.user}
 
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
 
     @action(detail=True, methods=["patch"])
     def update_status(self, request, pk=None):
@@ -123,6 +121,9 @@ class SubscriptionViewSet(ModelViewSet):
             .prefetch_related("membership__images")
             .filter(user=user)
         )
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 
 class PaymentViewSet(ModelViewSet):
