@@ -15,6 +15,8 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import permissions
 from django.db.models import Count, Q
+from plans.pagination import MembershipPagination
+from rest_framework.filters import SearchFilter
 
 # Create your views here.
 
@@ -26,6 +28,9 @@ class MembershipViewSet(ModelViewSet):
      - Allow authenticated Staff to create, update and delete membership plans
      - Allow authenticated Members to view memberships
     """
+    pagination_class = MembershipPagination
+    filter_backends = [SearchFilter]
+    search_fields = ["name", "price", "duration"]
 
     permission_classes = [IsAdminOrReadOnly]
     queryset = Membership.objects.prefetch_related("images").all()
@@ -58,7 +63,8 @@ class SubscriptionViewSet(ModelViewSet):
         subscriptions of the members
      - Allow authenticated Members to view and update their own subscriptions
     """
-
+    filter_backends = [SearchFilter]
+    search_fields = ["user__email", "membership__name", "status"]
     http_method_names = ["post", "get", "delete", "patch"]
 
     def get_permissions(self):
@@ -127,6 +133,9 @@ class PaymentViewSet(ModelViewSet):
      - Allow authenticated Staff to view payments
      - Allow authenticated Members to make payments for their subscriptions
     """
+
+    filter_backends = [SearchFilter]
+    search_fields = ["user__email", "amount", "status"]
 
     def get_permissions(self):
         user = self.request.user

@@ -37,6 +37,11 @@ class FeedbackSerializer(serializers.ModelSerializer):
         fields = ["id", "user", "fitness_class", "ratings", "comment", "created_at"]
         read_only_fields = ["id", "user", "created_at"]
 
+class CreateFeedbackSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Feedback
+        fields = ["id", "fitness_class", "ratings", "comment"]
+
 
 class UpdateFeedbackSerializer(serializers.ModelSerializer):
     class Meta:

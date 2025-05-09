@@ -15,6 +15,8 @@ from api.permissions import IsAdminOrReadOnly, IsAdminOrStaff
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from classes.paginations import DefaultPagination
+from rest_framework.filters import SearchFilter
 
 
 # Create your views here.
@@ -27,6 +29,10 @@ class FitnessClassViewSet(ModelViewSet):
      - Allow authenticated Staff to create, update and delete fitness class
      - Allow authenticated Members to view fitness classes and info
     """
+
+    pagination_class = DefaultPagination
+    filter_backends = [SearchFilter]
+    search_fields = ["name", "description"]
 
     queryset = (
         FitnessClass.objects.select_related("instructor")
@@ -63,6 +69,8 @@ class BookingViewSet(ModelViewSet):
         booking history and update booking status
     """
 
+    filter_backends = [SearchFilter]
+    search_fields = ["user__email", "fitness_class__name", "status"]
     http_method_names = ["post", "get", "delete", "patch"]
 
     def get_permissions(self):
@@ -125,6 +133,9 @@ class AttendanceViewSet(ModelViewSet):
      - Allow authenticated staff to mark attendance for members in fitness classes
      - Allow authenticated members to view their attendance history
     """
+
+    filter_backends = [SearchFilter]
+    search_fields = ["user__email", "fitness_class__name", "status"]
 
     def get_serializer_class(self):
         method = self.request.method

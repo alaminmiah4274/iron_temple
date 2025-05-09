@@ -1,9 +1,14 @@
-from reviews.serializers import FeedbackSerializer, UpdateFeedbackSerializer
+from reviews.serializers import (
+    FeedbackSerializer, 
+    UpdateFeedbackSerializer, 
+    CreateFeedbackSerializer,
+)
 from rest_framework.viewsets import ModelViewSet
 from reviews.models import Feedback
 from rest_framework.response import Response
 from reviews.permissions import IsReadOnly, IsWriteOnly
 from rest_framework.decorators import action
+from rest_framework.filters import SearchFilter
 
 # Create your views here.
 
@@ -15,9 +20,11 @@ class FeedbackViewSet(ModelViewSet):
      - Allow authenticated staff to view feedbacks for their classes
      - Allow authenticated members to create, update and delete their feedbacks
     """
-
+    
     serializer_class = FeedbackSerializer
     http_method_names = ["post", "get", "delete", "patch"]
+    filter_backends = [SearchFilter]
+    filter_fields = ["user__email", "fitness_class__name", "ratings"]
 
     def get_permissions(self):
         if self.request.user.is_superuser or self.request.user.is_staff:
@@ -57,4 +64,6 @@ class FeedbackViewSet(ModelViewSet):
     def get_serializer_class(self):
         if self.action == "update_review":
             return UpdateFeedbackSerializer
+        if self.request.method == "POST":
+            return CreateFeedbackSerializer
         return FeedbackSerializer
