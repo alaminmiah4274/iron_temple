@@ -15,7 +15,6 @@ from api.permissions import IsAdminOrReadOnly, IsAdminOrStaff
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from classes.paginations import DefaultPagination
 from rest_framework.filters import SearchFilter
 
 
@@ -30,7 +29,6 @@ class FitnessClassViewSet(ModelViewSet):
      - Allow authenticated Members to view fitness classes and info
     """
 
-    pagination_class = DefaultPagination
     filter_backends = [SearchFilter]
     search_fields = ["name", "description"]
 

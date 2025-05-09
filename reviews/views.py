@@ -8,7 +8,6 @@ from reviews.models import Feedback
 from rest_framework.response import Response
 from reviews.permissions import IsReadOnly, IsWriteOnly
 from rest_framework.decorators import action
-from rest_framework.filters import SearchFilter
 
 # Create your views here.
 
@@ -23,8 +22,6 @@ class FeedbackViewSet(ModelViewSet):
     
     serializer_class = FeedbackSerializer
     http_method_names = ["post", "get", "delete", "patch"]
-    filter_backends = [SearchFilter]
-    filter_fields = ["user__email", "fitness_class__name", "ratings"]
 
     def get_permissions(self):
         if self.request.user.is_superuser or self.request.user.is_staff:
