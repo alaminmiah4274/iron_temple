@@ -9,6 +9,7 @@ from classes.serializers import (
     FitnessClassImageSerializer,
     CreateAttendanceSerializer,
     UpdateAttendanceSerializer,
+    CreateFitnessClassSerializer,
 )
 from classes.permissions import AdminOrReadOnlyFitnessClass
 from api.permissions import IsAdminOrReadOnly, IsAdminOrStaff
@@ -39,6 +40,11 @@ class FitnessClassViewSet(ModelViewSet):
     )
     permission_classes = [AdminOrReadOnlyFitnessClass]
     serializer_class = FitnessClassSerializer
+
+    def get_serializer_class(self):
+        if self.request.method == "POST":
+            return CreateFitnessClassSerializer
+        return FitnessClassSerializer
 
 
 class FitenessClassImageViewSet(ModelViewSet):

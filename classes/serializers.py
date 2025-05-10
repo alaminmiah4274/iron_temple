@@ -27,6 +27,7 @@ class FitnessClassImageSerializer(serializers.ModelSerializer):
         fields = ["id", "image"]
 
 
+# to show fitness class info
 class FitnessClassSerializer(serializers.ModelSerializer):
     instructor = SimpleUserSerializer(read_only=True)
     images = FitnessClassImageSerializer(many=True, read_only=True)
@@ -43,6 +44,23 @@ class FitnessClassSerializer(serializers.ModelSerializer):
             "capacity",
             "images",
         ]
+
+
+# to create fitness class
+class CreateFitnessClassSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FitnessClass
+        fields = [
+            "id",
+            "name",
+            "description",
+            "instructor",
+            "schedule",
+            "duration",
+            "capacity",
+            "images",
+        ]
+        read_only_fields = ["images"]
 
 
 """ BOOKING MODEL SERIALIZER """
