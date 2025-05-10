@@ -81,6 +81,7 @@ WSGI_APPLICATION = "iron_temple.wsgi.app"
 # cors headers
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
+    "https://iron-temple-client.vercel.app",
 ]
 
 
