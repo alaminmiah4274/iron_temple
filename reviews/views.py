@@ -24,9 +24,11 @@ class FeedbackViewSet(ModelViewSet):
     http_method_names = ["post", "get", "delete", "patch"]
 
     def get_permissions(self):
-        if self.request.user.is_superuser or self.request.user.is_staff:
-            return [IsReadOnly()]
-        return [IsWriteOnly()]
+        user = self.request.user
+
+        if user.is_active:
+            return [IsWriteOnly()]
+        return [IsReadOnly()]
 
     def get_queryset(self):
         user = self.request.user
@@ -39,7 +41,15 @@ class FeedbackViewSet(ModelViewSet):
             return Feedback.objects.select_related("user", "fitness_class").all()
         if user.is_staff:
             return Feedback.objects.filter(fitness_class__instructor=user)
-        return Feedback.objects.filter(user=user)
+        if user.is_active:
+            return Feedback.objects.filter(user=user)
+        return Feedback.objects.select_related("user", "fitness_class").all()
+
+    """
+    if user.is_active:
+            return Feedback.objects.filter(user=user)
+        return Feedback.objects.all()
+    """
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
