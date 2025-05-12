@@ -24,6 +24,7 @@ class Subscription(models.Model):
         ("ACTIVE", "Active"),
         ("EXPIRED", "Expired"),
         ("CANCELLED", "Cancelled"),
+        ("PAID", "Paid"),
     ]
 
     user = models.ForeignKey(

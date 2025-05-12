@@ -223,3 +223,7 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 # storage file config
 STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
+
+# url for payment gateway
+BACKEND_URL = config("BACKEND_URL")
+FRONTEND_URL = config("FRONTEND_URL")

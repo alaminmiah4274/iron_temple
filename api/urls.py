@@ -12,6 +12,11 @@ from plans.views import (
     PaymentViewSet,
     PaymentReportViewSet,
     MembershipImageViewSet,
+    initiate_payment,
+    payment_success,
+    payment_cancel,
+    payment_fail,
+    HasSubscribedMembership,
 )
 from reviews.views import FeedbackViewSet
 from reports.views import ReportViewSet
@@ -49,4 +54,12 @@ urlpatterns = [
     path("", include(router.urls)),
     path("", include(membership_router.urls)),
     path("", include(fitness_class_router.urls)),
+    path("payment/initiate/", initiate_payment, name="payment-initiate"),
+    path("payment/success/", payment_success, name="payment-success"),
+    path("payment/cancel/", payment_cancel, name="payment-cancel"),
+    path("payment/fail/", payment_fail, name="payment-fail"),
+    path(
+        "subscriptions/has-subscribed/<int:membership_id>/",
+        HasSubscribedMembership.as_view(),
+    ),
 ]
